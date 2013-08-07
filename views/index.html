@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>gComa</title>
+    <link type="text/css" href="home/hms/vinay/nodejs/views/jquery/jPlayer/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" />
+    <script src="/home/hms/vinay/nodejs/views/jquery/jquery-1.7.min.js"></script>
+    <script type="text/javascript" src="/home/hms/vinay/nodejs/views/jquery/jPlayer/jquery.jplayer.min.js"></script>
+</head>
+
+<body>  
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+  $('.jp-audio').hide();
+  $('.jp-video').hide();
+        /*$.ajax({
+	  url: "/stream",
+	  type: "GET",	   
+	  complete: function() {
+	    console.log('process complete');
+	  },
+	  success: function(data) {
+	    //console.log(data);
+	    console.log('process success');
+	  },
+	  error: function() {
+	    console.log('process error');
+	  },
+	});*/
+
+        /*****audio player******/
+        $('.scan').on('click', '.audio', function() {
+
+	  $("#jquery_jplayer_1").jPlayer("destroy");
+
+          $('.jp-video').hide();
+	  $('.jp-audio').show();
+
+          var file = $(this).text();	            
+	  
+          $("#jquery_jplayer_1").jPlayer({
+            ready: function () {
+	      $(this).jPlayer({solution:"flash, html"});
+              $(this).jPlayer("setMedia", {
+	        oga: file,
+	        m4a: file,
+                webma: file,
+	        mp3: file
+              }).jPlayer("play");	    
+            },
+            swfPath: "/home/hms/vinay/nodejs/views/jquery/jPlayer",
+            supplied: "mp3,m4a,oga"
+          });
+          
+          $('.jp-audio .jp-title ul li').html(file);
+        }); 
+
+        /******video player******/
+        $('.scan').on('click', '.video', function() {
+
+          $("#jquery_jplayer_1").jPlayer("destroy");
+
+          $('.jp-audio').hide();
+	  $('.jp-video').show();
+
+          var file = $(this).text();	            
+	  
+          $("#jquery_jplayer_1").jPlayer({
+            ready: function () {
+	      //$(this).jPlayer({solution:"flash, html"});
+              $(this).jPlayer("setMedia", {
+	        webmv: file
+              }).jPlayer("play");	    
+            },
+            swfPath: "/home/hms/vinay/nodejs/views/jquery/jPlayer",
+            supplied: "m4v, webmv"
+          });
+          
+          $('.jp-video .jp-title ul li').html(file);
+        }); 
+
+
+
+        $("#scan_link").click(function () { 
+          $.ajax({
+	    url: "/scan",
+	    type: "GET",
+	    //async: false,	   
+	    complete: function() {	      
+	      console.log('process complete');
+	    },
+	    success: function(data) {
+              var array = data.toString().split("\n");
+	      for(i in array) {
+                switch(array[i].split('.').pop().toLowerCase()) {
+		  case 'mp3': case 'ogg': case 'flac': case 'wav': case 'wma': case 'aac': case 'ra': case 'midi': case 'aiff': case 'm4a': 
+                    $(".scan").append('<a class="audio" href=#>'+array[i]+'</a><br>');
+                    break;
+                  case 'avi': case 'wmv': case 'webm': case 'mp4': case 'mpeg': case 'mpg': case 'mov': case 'flv': case 'rm':
+                    $(".scan").append('<a class="video" href=#>'+array[i]+'</a><br>');
+                    break;
+	        }
+              }	      
+              console.log(data);
+	      console.log('process success');
+	    },
+	    error: function() {
+	      console.log('process error');
+	    }
+	  });  
+        });
+      
+});
+    </script>
+
+
+    <a href="#" id="scan_link">Scan Media</a>
+    <div class="scan"></div><br>
+
+<!-- VIDEO PLAYER -->
+  <div id="jp_container_1" class="jp-video ">
+    <div class="jp-type-single">
+      <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+      <div class="jp-gui">
+        <div class="jp-video-play">
+          <a href="javascript:;" class="jp-video-play-icon" tabindex="1">play</a>
+        </div>
+        <div class="jp-interface">
+          <div class="jp-progress">
+            <div class="jp-seek-bar">
+              <div class="jp-play-bar"></div>
+            </div>
+          </div>
+          <div class="jp-current-time"></div>
+          <div class="jp-duration"></div>
+          <div class="jp-controls-holder">
+            <ul class="jp-controls">
+              <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+              <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+              <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+              <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+              <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+              <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+            </ul>
+            <div class="jp-volume-bar">
+              <div class="jp-volume-bar-value"></div>
+            </div>
+            <ul class="jp-toggles">
+              <li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen">full screen</a></li>
+              <li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen">restore screen</a></li>
+              <li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+              <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+            </ul>
+          </div>
+          <div class="jp-title">
+            <ul>
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="jp-no-solution">
+        <span>Update Required</span>
+        To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+      </div>
+    </div>
+  </div>
+
+<!-- AUDIO PLAYER -->
+ <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+  <div id="jp_container_1" class="jp-audio">
+    <div class="jp-type-single">
+      <div class="jp-gui jp-interface">
+        <ul class="jp-controls">
+          <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+          <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+          <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+          <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+          <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+          <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+        </ul>
+        <div class="jp-progress">
+          <div class="jp-seek-bar">
+            <div class="jp-play-bar"></div>
+          </div>
+        </div>
+        <div class="jp-volume-bar">
+          <div class="jp-volume-bar-value"></div>
+        </div>
+        <div class="jp-time-holder">
+          <div class="jp-current-time"></div>
+          <div class="jp-duration"></div>
+          <ul class="jp-toggles">
+            <li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+            <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="jp-title">
+        <ul>
+          <li></li>
+        </ul>
+      </div>
+      <div class="jp-no-solution">
+        <span>Update Required</span>
+        To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>  
+
