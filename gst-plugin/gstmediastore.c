@@ -234,7 +234,7 @@ gst_media_store_render (GstBaseSink * sink, GstBuffer * buffer)
   guint i, retval;
   sqlite3 *db;
 
-  retval = sqlite3_open("/home/hms/vinay/media.db",&db);
+  retval = sqlite3_open("/home/test/media.db",&db);
   if( retval ){
 	#ifdef DEBUG
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
