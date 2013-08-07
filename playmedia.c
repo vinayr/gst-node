@@ -75,7 +75,7 @@ main (int   argc,
   sqlite3 *db;
   sqlite3_stmt *stmt;
 
-  retval = sqlite3_open("/home/hms/vinay/media.db",&db);
+  retval = sqlite3_open("/home/test/media.db",&db);
   if(retval != SQLITE_OK) {
     fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
     sqlite3_close(db);
